@@ -14,7 +14,8 @@ class SinglePage extends Component {
         txnFromDate:'',
         txnToDate:'',
         portFolioUserId:'',
-        portFolioToDate:''
+        portFolioToDate:'',
+        isLoading:false
      } 
     
     componentDidMount()
@@ -31,14 +32,16 @@ class SinglePage extends Component {
 
         getPortfolioDetails(specificObject)
         .then(response=>response.json())
-        .then(data=>data.map(d=>(
+        .then(data=>
             {
-                ...d,
-                tillDate:formatDateTime(d.tillDate)   
-            }
-        )
-        ))
-        .then(data=>this.setState({portFolioDetails:data}));
+                data.map(d=>(
+                {
+                    ...d,
+                    tillDate:formatDateTime(d.tillDate)   
+                }))
+                this.setState({portFolioDetails:data})
+            });
+        // .then(data=>this.setState({portFolioDetails:data}));
     }
 
     getTxnData() 
@@ -78,12 +81,6 @@ class SinglePage extends Component {
             });
     }
 
-    resetTxnData = () =>
-    {
-        this.setState({txnUserId:'',txnFromDate:'',txnToDate:''});
-        this.getTxnData();
-    }
-
     render() 
     {
         return (<>
@@ -103,7 +100,7 @@ class SinglePage extends Component {
                             <div className='row g-3'>
                                 <div className="form col-md-3">
                                     <span htmlFor="floatingUserId">User Id</span>
-                                    <input type="text" value={this.state.txnUserId} onChange={event=>this.setState({txnUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="1234"/>
+                                    <input type="text" value={this.state.txnUserId} onChange={event=>this.setState({txnUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="Enter User Id"/>
                                 </div>
                                 <div className="form-floating col-md-3">
                                     <span>From Date</span>
@@ -115,9 +112,6 @@ class SinglePage extends Component {
                                 </div>
                                 <div className="form-floating col-md-1">
                                 <button className="btn btn-primary mt-4" onClick={()=>this.getTxnData()}>Search</button>
-                                </div>
-                                <div className="form-floating col-md-1">
-                                <button className="btn btn-primary mt-4" onClick={()=>this.resetTxnData()}>Reset</button>
                                 </div>
                             </div>
                             </div>
@@ -156,7 +150,7 @@ class SinglePage extends Component {
                             <div className='row g-3'>
                                 <div className="form col-md-3">
                                     <span htmlFor="floatingUserId">User Id</span>
-                                    <input type="text" value={this.state.portFolioUserId} onChange={event=>this.setState({portFolioUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="1234"/>
+                                    <input type="text" value={this.state.portFolioUserId} onChange={event=>this.setState({portFolioUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="Enter User Id"/>
                                 </div>
                                 <div className="form-floating col-md-3">
                                     <span>To Date</span>
@@ -198,13 +192,24 @@ class SinglePage extends Component {
                 <div className="modal-body">
                     <p>
                     <form className='row g-3'>
-                        <div className="form col-md-3">
+                        <div className="form col-md-4">
                             <span htmlFor="floatingModalUserId">User Id</span>
-                            <input type="text" className="form-control" value={this.state.createUserId} onChange={event=>this.setState({createUserId:event.target.value})} id="floatingModalUserId" placeholder="1234"/>
+                            <input type="text" className="form-control" value={this.state.createUserId} onChange={event=>this.setState({createUserId:event.target.value})} id="floatingModalUserId" placeholder="Enter User Id"/>
                         </div>
                         <div className="form col-md-3">
                             <span htmlFor="floatingModalPriceId">Price</span>
-                            <input type="text" className="form-control" value={this.state.createPrice} onChange={event=>this.setState({createPrice:event.target.value})} id="floatingModalPriceId" placeholder="12.34"/>
+                            <input type="text" 
+                                className="form-control" 
+                                value={this.state.createPrice} 
+                                onKeyPress={(event) => {
+                                    
+                                    if (event.key === "-" && (this.state.createPrice.length || this.state.createPrice.includes("-")) ) {
+                                    event.preventDefault();
+                                    }
+                                }} 
+                                onChange={event=>this.setState({createPrice:event.target.value})} 
+                                id="floatingModalPriceId" 
+                                placeholder="12.34"/>
                         </div>
                     </form>
                     </p>
