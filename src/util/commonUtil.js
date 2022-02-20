@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const convertObjectToQueryParam = (param) =>
 {
     let tempArray=[];
@@ -12,5 +14,5 @@ export const convertObjectToQueryParam = (param) =>
 
 export const formatDateTime = (datetime) =>
 {
-    return datetime;
+    return moment(datetime).format("DD-MM-yyyy HH:mm:ss");
 }

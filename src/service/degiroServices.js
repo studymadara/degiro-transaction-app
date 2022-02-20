@@ -11,8 +11,8 @@ export const getTransactionDetails = (params) => {
     return fetch(API_LINK+'/getTransactionDetails'+convertObjectToQueryParam(params),{method:'GET'});
 }
 
-export const getPortfolioDetails = () => {
-    return fetch(API_LINK+'/getPortFolioDetails',{method:'GET'});
+export const getPortfolioDetails = (params) => {
+    return fetch(API_LINK+'/getPortFolioDetails'+convertObjectToQueryParam(params),{method:'GET'});
 }
 
 export const updateTransactionDetails = (transactionId) => {

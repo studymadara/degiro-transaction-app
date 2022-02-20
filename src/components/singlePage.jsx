@@ -12,7 +12,9 @@ class SinglePage extends Component {
         createPrice:'',
         txnUserId:'',
         txnFromDate:'',
-        txnToDate:''
+        txnToDate:'',
+        portFolioUserId:'',
+        portFolioToDate:''
      } 
     
     componentDidMount()
@@ -23,16 +25,27 @@ class SinglePage extends Component {
 
     getPortFolioData()
     {
-        getPortfolioDetails()
+        let specificObject="";
+        if(this.state.portFolioUserId!=undefined && this.state.portFolioUserId!=='')
+            specificObject={'userId':this.state.portFolioUserId,'toDateTime':formatDateTime(this.state.portFolioToDate)};
+
+        getPortfolioDetails(specificObject)
         .then(response=>response.json())
+        .then(data=>data.map(d=>(
+            {
+                ...d,
+                tillDate:formatDateTime(d.tillDate)   
+            }
+        )
+        ))
         .then(data=>this.setState({portFolioDetails:data}));
     }
 
-    getTxnData(userId,fromDate,toDate) 
+    getTxnData() 
     {
-        var specificObject="";
-        if(userId!=undefined)
-            specificObject={'userId':userId,'fromDate':formatDateTime(fromDate),'toDate':formatDateTime(toDate)};
+        let specificObject="";
+        if(this.state.txnUserId!=undefined && this.state.txnUserId!=='')
+            specificObject={'userId':this.state.txnUserId,'fromDateTime':formatDateTime(this.state.txnFromDate),'toDateTime':formatDateTime(this.state.txnToDate)};
 
         getTransactionDetails(specificObject)
         .then(response=>response.json())
@@ -65,6 +78,12 @@ class SinglePage extends Component {
             });
     }
 
+    resetTxnData = () =>
+    {
+        this.setState({txnUserId:'',txnFromDate:'',txnToDate:''});
+        this.getTxnData();
+    }
+
     render() 
     {
         return (<>
@@ -75,24 +94,32 @@ class SinglePage extends Component {
                 <div className="card-body">
                     <article className="my-3" id="floating-labels">
                         <div>
+                            <div className='d-flex justify-content-between'>
+                                <div className="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+                                <h5>Search Transactions</h5>
+                                </div>
+                            </div>
                             <div className="bd-example">
-                            <form className='row g-3'>
+                            <div className='row g-3'>
                                 <div className="form col-md-3">
                                     <span htmlFor="floatingUserId">User Id</span>
                                     <input type="text" value={this.state.txnUserId} onChange={event=>this.setState({txnUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="1234"/>
                                 </div>
                                 <div className="form-floating col-md-3">
                                     <span>From Date</span>
-                                    <Datetime value={this.state.txnFromDate} id='floatingFromDate'></Datetime>
+                                    <Datetime value={this.state.txnFromDate} onChange={event=>this.setState({txnFromDate:event})} id='floatingFromDate'></Datetime>
                                 </div>
                                 <div className="form-floating col-md-3">
                                     <span>To Date</span>
-                                    <Datetime value={this.state.txnToDate} id='floatingToDate'></Datetime>
+                                    <Datetime value={this.state.txnToDate} onChange={event=>this.setState({txnToDate:event})} id='floatingToDate'></Datetime>
                                 </div>
-                                <div className="form-floating col-md-3">
-                                <button className="btn btn-primary mt-4" onClick={()=>this.getTxnData(this.state.txnUserId,this.state.txnFromDate,this.state.txnToDate)}>Search</button>
+                                <div className="form-floating col-md-1">
+                                <button className="btn btn-primary mt-4" onClick={()=>this.getTxnData()}>Search</button>
                                 </div>
-                            </form>
+                                <div className="form-floating col-md-1">
+                                <button className="btn btn-primary mt-4" onClick={()=>this.resetTxnData()}>Reset</button>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </article>
@@ -117,6 +144,32 @@ class SinglePage extends Component {
            
             <div className="card" style={{marginTop:'4%'}}>
                 <div className="card-body">
+                
+                <article className="my-3" id="floating-labels">
+                        <div>
+                            <div className='d-flex justify-content-between'>
+                                <div className="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+                                <h5>Search PortFolios</h5>
+                                </div>
+                            </div>
+                            <div className="bd-example">
+                            <div className='row g-3'>
+                                <div className="form col-md-3">
+                                    <span htmlFor="floatingUserId">User Id</span>
+                                    <input type="text" value={this.state.portFolioUserId} onChange={event=>this.setState({portFolioUserId:event.target.value})}  className="form-control" id="floatingUserId" placeholder="1234"/>
+                                </div>
+                                <div className="form-floating col-md-3">
+                                    <span>To Date</span>
+                                    <Datetime value={this.state.portFolioToDate} onChange={event=>this.setState({portFolioToDate:event})} id='floatingPortFolioToDate'></Datetime>
+                                </div>
+                                <div className="form-floating col-md-3">
+                                    <button className="btn btn-primary mt-4" onClick={()=>this.getPortFolioData()}>Search</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </article>
+                
                 <article className="my-3">
                     <div className="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
                         <h5>List of Portfolios</h5>
