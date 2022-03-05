@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/degiro-transaction-app/static/css/main.c1634ca8.css",
-    "main.js": "/degiro-transaction-app/static/js/main.b80d5838.js",
+    "main.js": "/degiro-transaction-app/static/js/main.f7c72499.js",
     "static/js/787.e999f571.chunk.js": "/degiro-transaction-app/static/js/787.e999f571.chunk.js",
     "static/media/logo.svg": "/degiro-transaction-app/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/degiro-transaction-app/index.html",
     "main.c1634ca8.css.map": "/degiro-transaction-app/static/css/main.c1634ca8.css.map",
-    "main.b80d5838.js.map": "/degiro-transaction-app/static/js/main.b80d5838.js.map",
+    "main.f7c72499.js.map": "/degiro-transaction-app/static/js/main.f7c72499.js.map",
     "787.e999f571.chunk.js.map": "/degiro-transaction-app/static/js/787.e999f571.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c1634ca8.css",
-    "static/js/main.b80d5838.js"
+    "static/js/main.f7c72499.js"
   ]
 }
