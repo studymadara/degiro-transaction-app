@@ -55,11 +55,22 @@ class SinglePage extends Component {
         .then(data=>data.map( d => (
             {
                 ...d,
-                txnDateTime:formatDateTime(d.txnDateTime), 
-                action:<button className="btn btn-danger" onClick={()=>this.cancelTransactionService(d)} >Delete</button>
+                txnDateTime:formatDateTime(d.txnDateTime),
+                transactionStatus:this.formatStatus(d.transactionStatus), 
+                action:this.showButton(d)
             }
             ))) 
         .then(data=>this.setState({transactionDetails:data}));
+    }
+
+    showButton = (object) =>
+    {
+        return object.transactionStatus==='TXN_CANCELLED'?'NA':<button className="btn btn-danger" onClick={()=>this.cancelTransactionService(object)} >Delete</button>;
+    }
+
+    formatStatus=(status) =>
+    {
+        return status==='TXN_CANCELLED'?'Transaction Cancelled':'Transaction Submitted';
     }
 
     cancelTransactionService = ({transactionId}) =>
